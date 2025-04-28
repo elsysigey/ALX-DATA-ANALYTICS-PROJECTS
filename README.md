@@ -16,4 +16,9 @@ The aims of the project are to:
 
 
 
-3. Finally, we will visualise the data using various functions and manipulations through Google Sheets to draw conclusions and discover insights. 
+3. Finally, we will visualise the data using various pivot tables, functions and manipulations through Google Sheets to draw conclusions and discover insights. ![pivot table](https://github.com/user-attachments/assets/2c4afae1-743d-4fe1-830a-ae42f63ea428)
+![visualisation 1](https://github.com/user-attachments/assets/c21bdc25-c775-4704-b96c-21206ceab113)
+![visualisation 2](https://github.com/user-attachments/assets/20661817-a62e-4baa-a340-a0358715a594)
+
+
+
