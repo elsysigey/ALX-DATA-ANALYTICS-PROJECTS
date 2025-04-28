@@ -11,5 +11,5 @@ The aim of the project is to:
 ## STEPS FOR THE PROJECT 
 1. The first step involved understanding the JMP dataset by analysing the dataset, identifying the data types in each column, and clarifying the meaning of the column headers.  ![screenshot 1 0](https://github.com/user-attachments/assets/45aa0fe2-42ce-4d36-a800-8608883e5f02)
 
-2.  Next, we will import the dataset into the Google Sheets app and clean the data by identifying and fixing null values, as well as incorrectly imported cells, since the delimiters in the dataset were both commas and semicolons.    ![1 2](https://github.com/user-attachments/assets/1ce601ac-b2b0-4a0b-949a-e21d23505706)
+2.  Next, import the dataset into the Google Sheets app and clean the data by identifying and fixing null values, as well as incorrectly imported cells, since the delimiters in the dataset were both commas and semicolons.    ![1 2](https://github.com/user-attachments/assets/1ce601ac-b2b0-4a0b-949a-e21d23505706)
 3.  
