@@ -16,9 +16,10 @@ The aims of the project are to:
 
 
 
-3. Finally, we will visualise the data using various pivot tables, functions and manipulations through Google Sheets to draw conclusions and discover insights. ![pivot table](https://github.com/user-attachments/assets/2c4afae1-743d-4fe1-830a-ae42f63ea428)
-![visualisation 1](https://github.com/user-attachments/assets/c21bdc25-c775-4704-b96c-21206ceab113)
-![visualisation 2](https://github.com/user-attachments/assets/20661817-a62e-4baa-a340-a0358715a594)
+3. Finally, we will visualise the data using various pivot tables, functions and manipulations through Google Sheets to draw conclusions and discover insights. 
+![access to water -alx 1](https://github.com/user-attachments/assets/3bad51ac-2900-4806-a50c-2a8e17c2c0b6)
+![access to water-alx 2](https://github.com/user-attachments/assets/011f537d-8a8c-44e9-b04e-48b1c19c6cc2)
+
 
 
 
