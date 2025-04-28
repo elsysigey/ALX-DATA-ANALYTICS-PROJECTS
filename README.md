@@ -1,4 +1,14 @@
 # ACCESS-TO-DRINKING-WATER
-## projec orverviewc
-investigate the access to safe and affordable dirinkng water using the JMP dataset from world Health Organisation.in the projec google sheet is used to clean the data ,analyze the data and visualize the data with reference to the united nation sustainable development 6: **clean water and sanitation ** 
-the aim of the project is :
+## project overview
+This project explores access to safe and affordable drinking water using the JMP dataset from the World Health Organisation. We will employ Google Sheets to clean, analyse, and visualise the data, aligning our findings with the **United Nations Sustainable Development Goal 6**: **Clean Water and Sanitation**.   
+
+The aim of the project is to:
+ 1. Understand the comparison between the dataset population and the estimated population.
+ 2. Gain insights into the distribution of the different features of water (basic, limited, and unimproved) in the different regions.
+ 3. Discover what access to water at different service levels presents itself to the population sizes.
+ 4. Uncover if there is a relationship between income group and national water access.
+
+## STEPS TO THE PROJECT 
+1. The first step involved understanding the JMP dataset by analyzing the dataset, identifying the data types in each column, and clarifying the meaning of the column headers.  ![screenshot 1 0](https://github.com/user-attachments/assets/45aa0fe2-42ce-4d36-a800-8608883e5f02)
+
+2.  Next, we impr
