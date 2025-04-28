@@ -1,7 +1,7 @@
 ## ALX DATA ANALYTICS PROJECT Of 
 
 ## Project Overview
-This project is part of the ALX Data Analytics Program. It demonstrates my ability to work with **Google Sheets**, **SQL**, and **Power BI** to manage, analyze, and visualize data.
+This collection of projects is part of the ALX Data Analytics Program. It demonstrates my ability to work with **Google Sheets**, **SQL**, and **Power BI** to manage, analyse, and visualise data.
 The primary goal of the project is to showcase data cleaning, transformation, querying, and reporting skills across different industry-relevant tools.
 
 ## Main Tools Used
