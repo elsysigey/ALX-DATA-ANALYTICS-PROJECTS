@@ -1,15 +1,17 @@
-# ACCESS-TO-DRINKING-WATER
-## project overview
-This project explores access to safe and affordable drinking water using the JMP dataset from the World Health Organisation. We will employ Google Sheets to clean, analyse, and visualise the data, aligning our findings with the **United Nations Sustainable Development Goal 6**: **Clean Water and Sanitation**.   
+### Access to Drinking Water
 
-The aim of the project is to:
- 1. Understand the comparison between the dataset population and the estimated population.
- 2. Gain insights into the distribution of the different features of water (basic, limited, and unimproved) in the different regions.
- 3. Discover what access to water at different service levels presents itself to the population sizes.
- 4. Uncover if there is a relationship between income group and national water access.
+### Project Overview
+This project investigates access to safe and affordable drinking water using the JMP dataset from the World Health Organisation. We will utilise Google Sheets to clean, analyse, and visualise the data, aligning our findings with the **United Nations Sustainable Development Goal 6**: **Clean Water and Sanitation**.
 
-## STEPS FOR THE PROJECT 
-1. The first step involved understanding the JMP dataset by analysing the dataset, identifying the data types in each column, and clarifying the meaning of the column headers.  ![screenshot 1 0](https://github.com/user-attachments/assets/45aa0fe2-42ce-4d36-a800-8608883e5f02)
+The aims of the project are to:
+1. Compare the estimated population with the dataset population.
+2. Gain insights into the distribution of water access categories (basic, limited, and unimproved) across different regions.
+3. Examine the access to water at varying service levels with population sizes.
+4. Identify any relationships between income groups and national water access.
 
-2.  Next, import the dataset into the Google Sheets app and clean the data by identifying and fixing null values, as well as incorrectly imported cells, since the delimiters in the dataset were both commas and semicolons.    ![1 2](https://github.com/user-attachments/assets/1ce601ac-b2b0-4a0b-949a-e21d23505706)
-3.  
+### Steps for the Project
+1. The first step involves understanding the JMP dataset by analysing the data, identifying the data types in each column, and clarifying the meanings of the column headers. ![screenshot 1 0](https://github.com/user-attachments/assets/45aa0fe2-42ce-4d36-a800-8608883e5f02)
+
+2. The next step includes importing the dataset into Google Sheets and cleaning the data by identifying and correcting blank values and incorrectly imported cells. The dataset uses both commas and semicolons as delimiters. To address this, use the "Find" function to locate semicolon delimiters and the "COUNTBLANK" function to find empty cells. ![1 2](https://github.com/user-attachments/assets/1ce601ac-b2b0-4a0b-949a-e21d23505706)
+
+3. Finally, we will visualise the data using various functions and manipulations through Google Sheets to draw conclusions and discover insights. 
