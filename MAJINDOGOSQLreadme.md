@@ -42,7 +42,17 @@ From water_source;
 |...                 |
 |shared_tap          |
     
-Using the filter condition, we uncovered the excessive waiting time that the people of Maji Ndogo experienced while waiting for water, which in scenarios exceeded 800 minutes.
+Using the filter condition, we uncovered the excessive waiting time that the people of Maji Ndogo experienced while waiting for water, with more scenarios exceeding 500 minutes.
+
+```sql
+select *
+from visits
+where visits.time_in_queue>500;
+```
+```
+output:
+105 rows returned
+```
 
 ### Assessing the Data Quality
 **Data Scrutiny**
