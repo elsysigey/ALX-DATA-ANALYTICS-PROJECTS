@@ -3,9 +3,8 @@
 This project is a **SQL data analytics** initiative aimed at addressing the persistent water crisis in Maji Ndogo.
 The overarching goal is to transform a vast repository of data into actionable insights that will guide our solutions. 
 By analysing this data, we aim to identify key trends, correlations, and root causes, which will then inform effective interventions.
+
 ![majindogo](https://github.com/user-attachments/assets/c8bafd61-c236-47a1-8c4b-84852720ff25)
-
-
 ---
 
 ### 1. **Getting to Know Our Data**
