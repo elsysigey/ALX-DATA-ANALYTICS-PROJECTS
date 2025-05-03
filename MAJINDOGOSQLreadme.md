@@ -110,6 +110,7 @@ To recognise outstanding contributions, the top three field surveyors were ident
 for their exceptional efforts during the survey.
 
 ```SQL
+-- IDENTIFY THE TOP WORKERS BASED ON THE NUMBER OF VISITS MADE
 SELECT
 	visits.assigned_employee_id,
     sum(visit_count)AS TOTAL_VISITS,
@@ -118,13 +119,13 @@ SELECT
     employee.phone_number
 FROM visits
 INNER JOIN employee on employee.assigned_employee_id=visits.assigned_employee_id
-group by visits.assigned_employee_id;
+group by visits, assigned_employee_id;
 ```
 
 ### Data Manipulation of the Water Source Dataset 
 
 The analysis of the `water_source` table reveals important insights into water access across urban and rural communities. Most water sources (60%) are located in rural areas. The dataset allows for exploration of various aspects, including the total population surveyed, the distribution of source types (wells, taps, rivers), the average users per source type, and the total number of users depending on each source type.
-These metrics help assess access and dependency levels across different water infrastructures
+These metrics help assess access and dependency levels across different water infrastructure.s
 
 ```sql
 -- How many people did we survey
@@ -132,3 +133,148 @@ select
 	sum(number_of_people_served)as sample_population
 from water_source;
 ```
+**_output_**
+![sample population](https://github.com/user-attachments/assets/13c7e71c-aa6c-4a22-8dee-1412e21b764a)
+
+```sql
+--How many wells, rivers and taps are there?
+select
+	type_of_water_source,
+	count(source_id)
+from water_source
+group by type_of_water_source;
+```
+**_output_**![sum of water sources](https://github.com/user-attachments/assets/efc37a7c-c5d5-4e9c-afeb-1ee851755f25)
+
+
+```sql
+--How many people share particular types of water sources on average?
+select
+	type_of_water_source,
+	avg(number_of_people_served)as number_of_people
+from water_source
+group by type_of_water_source;
+
+--output
+|type_of_water_source|number_of_people|
+|................... |................|
+|river               |699.1844        |
+|shared_tap          |2071.3147       |
+|...                 |...             |
+|tap_in_home_broken  |648.8593        |
+|well                | 278.5321       |
+```
+In the tap_in_home analysis, it indicates that 644 individuals are sharing the tap. This seems inconsistent with the summary, which reports that, on average, only 6 people reside in a home. This discrepancy suggests a need for further investigation into the data collection methods or possible errors in reporting the number of individuals associated with each tap
+
+```sql
+--How many people are getting water from each type of source
+select
+	type_of_water_source,
+	round(((sum(number_of_people_served)/'27628140')*100),0)as number_of_people--%of total people getting water rounded to 0 decimal places
+from water_source
+group by type_of_water_source;
+
+--output
+| type_of_water_source  |number_of_people |
+|.......................|.................|
+|tap_in_home            | 17              |
+|tap_in_home_broken     | 14              |
+|...                    |...              |
+|shared_tap             | 43              |
+|river                  | 9               |
+```
+Based on the number_of_people column, the highest percentage is for the shared tap, which accounts for 43%, while the lowest percentage is for the river, at just 9%..
+
+### RANKING THE WATER SOURCE TO AMEND BASED ON THE NUMBER OF PEOPLE SERVED
+To refine the analysis of water source effectiveness, tap_in_home was excluded from the rankings since it represents the highest standard of access and requires no further improvement. A window function was applied to rank the remaining water source types based on the total number of people served, enabling a clear prioritisation of sources that may need attention or investment.
+
+
+```SQL
+SELECT 
+	*,
+    row_number() over(order by number_of_people_served desc)as ranking
+FROM md_water_services.water_source;
+```
+![RANKING](https://github.com/user-attachments/assets/de0a8747-8ab7-4bf5-9501-e1b16e57b783)
+
+The ranking query for the column indicates the position  of investments or restructuring initiatives.
+
+### ANALYSING QUEUES
+The visits table was explored to analyse water access challenges in Maji Ndogo, focusing on queue durations and survey timing. Key insights included calculating the total survey period using DateTime functions, determining the average total queue time, and comparing queue patterns across different days of the week. The time_of_record column enabled aggregation by day and hour to better understand peak usage periods, ultimately helping to assess efficiency and inform strategies for reducing waiting times at water sources.
+
+```SQL
+select
+	time_format(time_of_record,'%H:00'),--Format the time_of_record to H:00 FORMAT
+    round(AVG(nullif(time_in_queue,0)),0)AS Average
+from visits
+group by time_format(time_of_record,'%H:00')
+order by time_format(time_of_record,'%H:00') ;
+```
+the output shows that morning period,🕕6:00am-🕗8:00am,and the evening period,🕔17:00-🕖19:00,as the longest queues time
+
+*pivot table mimicry*
+A detailed breakdown of water queue times was created using SQL to mimic a pivot table. The analysis used the `hour` extracted from the `time_of_record` column as rows and each day of the week as separate columns. The `CASE` function was applied to conditionally aggregate queue times by day, enabling a clear hour-by-day view of when queues are longest. This method revealed peak water collection periods—particularly mornings and evenings—highlighting patterns shaped by people’s daily routines.
+
+```SQL
+--CREATING A MIMIC TABLE
+select
+	time_format(time_of_record,'%H:00') as Hour_of_Day,
+    -- sunday
+    round(avg(
+		case
+        when dayname(time_of_record)='sunday'then time_in_queue
+        else null
+	end
+		),0) as Sunday,
+	-- Monday
+    round(avg(
+		case
+        when dayname(time_of_record)='Monday'then time_in_queue
+        else null
+	end
+		),0) as Monday,
+	-- tuesday
+    round(avg(
+    case 
+    when dayname(time_of_record)='Tuesday'then time_in_queue
+    else null
+end 
+	),0) as Tuesday,
+    -- wednesday
+    round(avg(
+    case
+    when dayname(time_of_record)='Wednesday'then time_in_queue
+    else null
+end
+	),0) as Wednesday,
+-- thursday
+	round(avg(
+    case 
+    when dayname(time_of_record)='thursday' then time_in_queue
+    else null
+end
+	),0) as Thursday,
+-- Friday
+round(avg(
+	Case
+    when dayname(time_of_record)='Friday' then time_in_queue
+    else null
+end
+	),0) as Friday,
+-- saturday
+round(avg(
+	case
+    when dayname(time_of_record)='Saturday'then time_in_queue
+    else null
+end 
+	),0) as Saturday
+from visits
+where time_in_queue != 0 -- exclude time_queue that are zero
+group by Hour_of_Day
+order by Hour_of_Day;
+```
+## insights
+1.![rankinbaby](https://github.com/user-attachments/assets/66d8b79f-acba-40ca-9fc3-9312faa854e8)  
+2. The total days taken to survey were 924 day5 years)  
+3. The shared taps are recommended as a first-rank investment repair.  
+4. 60% of the water sources are in rural areas.
