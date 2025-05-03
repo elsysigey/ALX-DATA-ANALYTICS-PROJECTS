@@ -123,5 +123,11 @@ group by visits.assigned_employee_id;
 
 ### Data Manipulation of the Water Source Dataset 
 
-An analysis of the `water_source` table reveals important insights into water access across urban and rural communities. The majority of water sources (60%) are located in rural areas. The dataset allows for exploration of various aspects, including total population surveyed, distribution of source types (wells, taps, rivers), average users per source type, and the total number of users depending on each source type.
-These metrics help assess access and dependency levels across different water infrastructures.
+The analysis of the `water_source` table reveals important insights into water access across urban and rural communities. Most water sources (60%) are located in rural areas. The dataset allows for exploration of various aspects, including the total population surveyed, the distribution of source types (wells, taps, rivers), the average users per source type, and the total number of users depending on each source type.
+These metrics help assess access and dependency levels across different water infrastructures
+
+```sql
+select 
+	sum(number_of_people_served)as sample_population
+from water_source;
+```
