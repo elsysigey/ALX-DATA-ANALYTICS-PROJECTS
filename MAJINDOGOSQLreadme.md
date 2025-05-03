@@ -127,6 +127,7 @@ The analysis of the `water_source` table reveals important insights into water a
 These metrics help assess access and dependency levels across different water infrastructures
 
 ```sql
+-- How many people did we survey
 select 
 	sum(number_of_people_served)as sample_population
 from water_source;
