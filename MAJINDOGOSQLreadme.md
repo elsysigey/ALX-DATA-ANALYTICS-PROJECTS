@@ -276,5 +276,186 @@ order by Hour_of_Day;
 ## insights
 1.![rankinbaby](https://github.com/user-attachments/assets/66d8b79f-acba-40ca-9fc3-9312faa854e8)  
 2. The total days taken to survey were 924 day5 years)  
-3. The shared taps are recommended as a first-rank investment repair.  
+3. The shared taps are recommended as a first-line investment for repair.  
 4. 60% of the water sources are in rural areas.
+
+### Correction based on the audit report
+With the audit results received, this phase focuses on identifying and correcting corrupted files. We are utilising a Common Table Expression (CTE) to expose the employees responsible for the errors, specifically those with an above-average employee count error. Fortunately, the schema's integrity remains intact; only the `employee.qualitative_score` has been corrupted.
+
+```sql
+##to find where the average error count is above average
+with incorrect_records as (SELECT 
+	auditor_report.location_id,
+    auditor_report.true_water_source_score,
+    visits.record_id,
+    employee.assigned_employee_id,
+    employee.employee_name,
+	water_quality.subjective_quality_score
+FROM md_water_services.auditor_report
+join visits
+	on auditor_report.location_id=visits.location_id
+join water_quality
+	on visits.record_id=water_quality.record_id
+join employee
+	on visits.assigned_employee_id=employee.assigned_employee_id
+where auditor_report.true_water_source_score != water_quality.subjective_quality_score --where the audit score and employee_score dont match
+	and visits.visit_count=1),
+error_count as (
+	select 
+		count(employee_name)as number_of_mistake, -- number of times the employee made errors
+		employee_name
+	FROM incorrect_records
+	group by employee_name),
+-- This query filters employees whose average error count is the average error count
+suspect_list as (
+	select 
+		employee_name,
+		number_of_mistake
+	from error_count
+	where number_of_mistake>(
+		select avg(number_of_mistake)
+		from error_count)
+	)
+-- This query filters where the "corrupt" employees gathered data
+select
+	employee_name,
+    location_id,
+    statements
+from incorrect_records
+where employee_name in (
+			select employee_name
+			 from suspect_list
+                );
+```
+**_output_**
+![corrupt employee](https://github.com/user-attachments/assets/108f6e99-ac58-44f2-8253-d2f1e5b037e8)
+
+### creating a table to generate % wwater sources in maji ndogo
+```sql
+-- create a common table expression
+WITH province_totals AS  (-- This CTE calculates the population of each province
+SELECT
+province_name,
+SUM(number_of_people_served) AS total_ppl_serv -- total sample population
+FROM
+combined_analysis_table
+GROUP BY
+province_name
+)
+select 
+	province_totals.province_name,
+	round(sum(case
+				when type_of_water_source="river" -- if water source is river then find % of sample population else 0
+                then number_of_people_served else 0 end)*100/SUM(number_of_people_served),0) as River,
+	round(sum(case
+				when type_of_water_source="shared_tap"-- if water source is shared_tap then sum up the total sample else 0
+                then number_of_people_served else 0 end)*100/SUM(number_of_people_served) ,0) as shared_tap,
+	round(sum(case
+				when type_of_water_source='tap_in_home'-- if water source is tap_in_home then sum up the total sample else 0
+                then number_of_people_served else 0 end)*100/SUM(number_of_people_served) ,0) as tap_in_home,
+	round(sum(case
+				when type_of_water_source='tap_in_home_broken'-- if water source is tap_in_home_broken then sum up the total sample else 0
+                then number_of_people_served else 0 end)*100/SUM(number_of_people_served),0) as tap_in_home_broken,
+	round(sum(case
+				when type_of_water_source='well'-- if water source is well then sum up the total sample else 0
+                then number_of_people_served else 0 end)*100/SUM(number_of_people_served) ,0) as well
+from combined_analysis_table
+join province_totals -- combine the combined_analysis_table and province total cte
+	on province_totals.province_name=combined_analysis_table.province_name
+group by combined_analysis_table.province_name
+order by combined_analysis_table.province_name;
+```
+### Aggregate data per town
+```sql
+WITH town_totals AS (−− This CTE calculates the population of each town
+−− Since there are two Harare towns, we have to group by province_name and town_name
+SELECT province_name, town_name, SUM(people_served) AS total_ppl_serv
+FROM combined_analysis_table
+GROUP BY province_name,town_name -- province first then town
+)
+SELECT
+ct.province_name,
+ct.town_name,
+ROUND((SUM(CASE WHEN source_type = 'river'
+THEN people_served ELSE 0 END) * 100.0 / tt.total_ppl_serv), 0) AS river,
+ROUND((SUM(CASE WHEN source_type = 'shared_tap'
+THEN people_served ELSE 0 END) * 100.0 / tt.total_ppl_serv), 0) AS shared_tap,
+ROUND((SUM(CASE WHEN source_type = 'tap_in_home'
+THEN people_served ELSE 0 END) * 100.0 / tt.total_ppl_serv), 0) AS tap_in_home,
+ROUND((SUM(CASE WHEN source_type = 'tap_in_home_broken'
+THEN people_served ELSE 0 END) * 100.0 / tt.total_ppl_serv), 0) AS tap_in_home_broken,
+ROUND((SUM(CASE WHEN source_type = 'well'
+THEN people_served ELSE 0 END) * 100.0 / tt.total_ppl_serv), 0) AS well
+FROM
+combined_analysis_table ct
+JOIN −− Since the town names are not unique, we have to join on a composite key
+town_totals tt ON ct.province_name = tt.province_name AND ct.town_name = tt.town_name
+GROUP BY −− We group by province first, then by town.
+ct.province_name,
+ct.town_name
+ORDER BY
+ct.town_name;
+```
+### create a temporary table
+```sql
+-- create a common table expression and a temporary table
+create temporary table town_aggregated_water_access as
+WITH province_totals AS  (-- This CTE calculates the population of each province
+SELECT
+province_name,
+SUM(number_of_people_served) AS total_ppl_serv -- total sample population
+FROM
+combined_analysis_table
+GROUP BY
+province_name
+)
+select 
+	province_totals.province_name,
+	round(sum(case
+				when type_of_water_source="river" -- if water source is river then find % of sample population else 0
+                then number_of_people_served else 0 end)*100/SUM(number_of_people_served),0) as River,
+	round(sum(case
+				when type_of_water_source="shared_tap"-- if water source is shared_tap then sum up the total sample else 0
+                then number_of_people_served else 0 end)*100/SUM(number_of_people_served) ,0) as shared_tap,
+	round(sum(case
+				when type_of_water_source='tap_in_home'-- if water source is tap_in_home then sum up the total sample else 0
+                then number_of_people_served else 0 end)*100/SUM(number_of_people_served) ,0) as tap_in_home,
+	round(sum(case
+				when type_of_water_source='tap_in_home_broken'-- if water source is tap_in_home_broken then sum up the total sample else 0
+                then number_of_people_served else 0 end)*100/SUM(number_of_people_served),0) as tap_in_home_broken,
+	round(sum(case
+				when type_of_water_source='well'-- if water source is well then sum up the total sample else 0
+                then number_of_people_served else 0 end)*100/SUM(number_of_people_served) ,0) as well
+from combined_analysis_table
+join province_totals -- combine the combined_analysis_table and province total cte
+	on province_totals.province_name=combined_analysis_table.province_name
+group by combined_analysis_table.province_name
+order by combined_analysis_table.province_name;
+```
+Which town has the highest ratio of people who have taps but have no running water?
+```sql
+SELECT
+province_name,
+town_name,
+ROUND(tap_in_home_broken / (tap_in_home_broken + tap_in_home) *
+
+100,0) AS Pct_broken_taps
+
+FROM
+town_aggregated_water_access
+```
+### insights
+1. Most water sources are rural in Maji Ndogo.
+2. 43% of our people are using shared taps. 2000 people often share one tap.
+3. 31% of our population has water infrastructure in their homes, but within that group,45% face non-functional systems due to issues with pipes, pumps, and reservoirs. Towns like Amina, the rural parts of Amanzi, and a couple of towns across Akatsi and Hawassa have broken infrastructure.
+4. 18% of our people are using wells, but within that, only 28% are clean. These are mostly in Hawassa, Kilimani and Akatsi.
+5. Our citizens often face long wait times for water, averaging more than 120 minutes:
+6 Queues are very long on Saturdays.
+7 Queues are longer in the mornings and evenings.
+8 Wednesdays and Sundays have the shortest queues.
+
+## 🙏 Acknowledgments
+
+Thanks to everyone who contributed or inspired this project!
+
+##reference :alx project :maji ndogo
