@@ -444,15 +444,9 @@ ROUND(tap_in_home_broken / (tap_in_home_broken + tap_in_home) *
 FROM
 town_aggregated_water_access
 ```
-### insights
-1. Most water sources are rural in Maji Ndogo.
-2. 43% of our people are using shared taps. 2000 people often share one tap.
-3. 31% of our population has water infrastructure in their homes, but within that group,45% face non-functional systems due to issues with pipes, pumps, and reservoirs. Towns like Amina, the rural parts of Amanzi, and a couple of towns across Akatsi and Hawassa have broken infrastructure.
-4. 18% of our people are using wells, but within that, only 28% are clean. These are mostly in Hawassa, Kilimani and Akatsi.
-5. Our citizens often face long wait times for water, averaging more than 120 minutes:
-6 Queues are very long on Saturdays.
-7 Queues are longer in the mornings and evenings.
-8 Wednesdays and Sundays have the shortest queues.
+### Power Bi Snippet
+![crime report](https://github.com/user-attachments/assets/df9d7924-d61b-4bb9-acd9-de1ceefb5d84)
+
 
 ## 🙏 Acknowledgments
 
