@@ -1,6 +1,6 @@
 ## Project Introduction: Maji Ndogo Water Crisis - Data-Driven Solutions Part 1 and 2
 
-This project is a **SQL data analytics** initiative aimed at addressing the persistent water crisis in Maji Ndogo.
+This project is a **SQL and Power Bi data analytics** initiative aimed at addressing the persistent water crisis in Maji Ndogo.
 The overarching goal is to transform a vast repository of data into actionable insights that will guide our solutions. 
 By analysing this data, we aim to identify key trends, correlations, and root causes, which will then inform effective interventions.
 
@@ -273,12 +273,6 @@ where time_in_queue != 0 -- exclude time_queue that are zero
 group by Hour_of_Day
 order by Hour_of_Day;
 ```
-## insights
-1.![rankinbaby](https://github.com/user-attachments/assets/66d8b79f-acba-40ca-9fc3-9312faa854e8)  
-2. The total days taken to survey were 924 day5 years)  
-3. The shared taps are recommended as a first-line investment for repair.  
-4. 60% of the water sources are in rural areas.
-
 ### Correction based on the audit report
 With the audit results received, this phase focuses on identifying and correcting corrupted files. We are utilising a Common Table Expression (CTE) to expose the employees responsible for the errors, specifically those with an above-average employee count error. Fortunately, the schema's integrity remains intact; only the `employee.qualitative_score` has been corrupted.
 
@@ -444,9 +438,10 @@ ROUND(tap_in_home_broken / (tap_in_home_broken + tap_in_home) *
 FROM
 town_aggregated_water_access
 ```
-### Power Bi Snippet
-![crime report](https://github.com/user-attachments/assets/df9d7924-d61b-4bb9-acd9-de1ceefb5d84)
-
+### data visualisation
+![maji ndogo report1](https://github.com/user-attachments/assets/53cc6cd1-351e-45b5-9d1c-23943c0e0aff)
+![maji ndogo report 2](https://github.com/user-attachments/assets/85880049-849e-4a8f-bad8-d3a0aac3dd0e)
+![maji ndog report 3](https://github.com/user-attachments/assets/79f0c564-84d8-46c7-b722-5dcc4bde2dc4)
 
 ## 🙏 Acknowledgments
 
