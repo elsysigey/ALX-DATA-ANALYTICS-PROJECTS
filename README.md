@@ -41,6 +41,4 @@ The primary goal of the project is to showcase data cleaning, transformation, qu
 ## Conclusion
 This project strengthens practical knowledge in data analytics by simulating real-world data management, analysis, and reporting tasks. The skills learned here form a solid foundation for advanced data analytics work and decision support roles.
 
----
 
-Would you also like me to give you a **shorter version** in case you need a more compact one for a submission? 🚀
